@@ -3,5 +3,6 @@ importFrom("grDevices", "rainbow", "adjustcolor")
 importFrom("graphics", "abline", "arrows", "axTicks", "axis", "par",
            "plot", "points", "segments", "text", "lines", "polygon",
            "rect")
-importFrom("stats", "var", "lm", "qf", "qt", "quantile", "sd")
+importFrom("stats", "var", "lm", "qf", "qt", "quantile", "sd","glm","qchisq",
+           "cor","predict")
 exportPattern("^[[:alpha:]]+")
