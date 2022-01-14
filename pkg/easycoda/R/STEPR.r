@@ -207,7 +207,7 @@ STEPR <- function(data, y, method = NA, family = "gaussian",
         logLik.top <- logLiks[logLik.order[1:top]]
         deviance.top  <- deviances[logLik.order[1:top]]
         ratios.top <- which(logLiks <= logLik.top[top], arr.ind=TRUE)
-        ratios.top <- ratios.top[order(logLik[ratios.top]),] 
+        ratios.top <- ratios.top[order(logLiks[ratios.top]),] 
         rationames.top <- paste(colnames(data)[ratios.top[, 1]], 
             colnames(data)[ratios.top[, 2]], sep = "/")
         rownames(ratios.top) <- rationames.top
@@ -403,7 +403,7 @@ STEPR <- function(data, y, method = NA, family = "gaussian",
         predictors <- as.data.frame(list(logratios=logratios))
         npar <- jratio
         if (!is.na(previous[[1]][1])) {
-            predictors <- cbind(previous, logratios)
+            predictors <- as.data.frame(list(previous=previous, logratios=logratios))
             npar <- ncol(predictors)
         }
         if (family == "gaussian") npar <- npar + 1

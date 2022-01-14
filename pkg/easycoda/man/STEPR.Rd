@@ -88,25 +88,54 @@ Michael Greenacre
 # then loop over the 26*25/2 = 325 possible logratios stepwise
 data(fish)
 habitat <- fish[,2]
-morph <- fish[,4:29] / rowSums(fish[,4:29])
-# predict habitat binary classification from morphometric ratios
+morph <- CLOSE(fish[,4:29])
+# predict habitat binary classification from morphometric ratios, BIC criterion
 fish.step1 <- STEPR(morph, as.factor(habitat), method=1, family="binomial", criterion="BIC")
 # [1] "Criterion increases when 5-th ratio enters"
-fish.step1$ratios
-#        row col
-# Bac/Hg   8  19
-# Hw/Jl    1   6
-# Fc/Fdl  10  17
-# Fal/Ed  16  24
+fish.step1$names
+# [1] "Bac/Hg" "Hw/Jl"  "Fc/Fdl" "Fal/Ed"
 # perform logistic regression with selected logratios
 fish.glm   <- glm(as.factor(habitat) ~ fish.step1$logratios, family="binomial")
 summary(fish.glm)
-fish.pred  <- predict(fish.glm)
-table(fish.pred>0.5, habitat)
+fish.pred1  <- predict(fish.glm)
+table(fish.pred1>0.5, habitat)
 #     habitat
 #        1  2
 # FALSE 57  4
 # TRUE   2 12
 # (Thus 69/75 correct predictions)
+#
+# force the sex variable in at the first step before selecting logratios
+# and using more strict Bonferroni default
+sex <- as.factor(fish[,1]) 
+fish.step2 <- STEPR(morph, as.factor(habitat), method=1, previous=sex, family="binomial")
+# [1] "Criterion increases when 3-th ratio enters"
+fish.step2$names
+# [1] "Bac/Hg" "Hw/Jl"
+# perform logistic regression with sex and selected logratios
+fish.glm   <- glm(as.factor(habitat) ~ sex + fish.step2$logratios, family="binomial")
+summary(fish.glm)
+# (sex not significant, Bonferroni only admits first two logratios)
+#
+# check the top 10 ratios at Step 1 to allow domeain knowledge to operate
+fish.step3 <- STEPR(morph, as.factor(habitat), method=1, nsteps=1, top=10, family="binomial")
+cbind(fish.step3$ratios.top, fish.step3$BIC.top)
+#        row col         
+# Bac/Hg   8  19 67.93744
+# Bp/Hg    7  19 69.87134
+# Jl/Hg    6  19 70.31554
+# Jw/Bp    5   7 71.53671
+# Jw/Jl    5   6 71.57122
+# Jw/Bac   5   8 71.69294
+# Fc/Hg   10  19 72.38560
+# Hw/Bac   1   8 73.25325
+# Jw/Fc    5  10 73.48882
+# Hw/Bp    1   7 73.55621
+# Suppose 5th in list, Jw/Jl (Jaw width/Jaw length), preferred at the first step, so forced in
+fish.step4 <- STEPR(morph, as.factor(habitat), method=1, previous=fish.step3$logratios.top[,5], family="binomial")
+# [1] "Criterion increases when 2-th ratio enters"
+fish.step4$names
+# [1] "Bac/Hg"
+# So after Jw/Jl forced in only Bac/Hg enters, the best one originally
 }
 \keyword{multivariate}
