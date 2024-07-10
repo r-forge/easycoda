@@ -30,7 +30,6 @@ CIplot_biv <- function (x, y, group, wt = rep(1/length(x), length(x)), varnames 
             ymax <- max(ymax, conf.elip[, 2])
         }
     }
-    par(mar = c(4.2, 4.2, 1, 1), cex.axis = 0.8)
     if (is.na(xlim[1])) 
         xlim = c(xmin, xmax)
     if (is.na(ylim[1])) 

@@ -16,7 +16,7 @@ STEPR <- function(data, y, method = NA, family = "gaussian",
 
 {
 # preliminaries and error checks
-  set.seed(123456789)
+#  set.seed(123456789)
   data <- as.matrix(data)
   if (!is.numeric(y) & !is.factor(y)) 
     stop("Response variable neither numeric nor a factor")
@@ -445,5 +445,3 @@ STEPR <- function(data, y, method = NA, family = "gaussian",
   }
 
 }
-
-
