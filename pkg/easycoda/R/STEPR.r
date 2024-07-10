@@ -1,4 +1,4 @@
-STEPR <- function(data, y, method = NA, family = "gaussian", 
+STEPR<-function(data, y, method = NA, family = "gaussian", 
                   nsteps = ncol(data)-1, top = 1, previous = NA, 
                   criterion = "Bonferroni", alpha = 0.05, 
                   previousparts=NA, denom=NA)
