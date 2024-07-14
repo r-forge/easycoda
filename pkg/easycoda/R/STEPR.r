@@ -1,4 +1,4 @@
-STEPR<-function(data, y, method = NA, family = "gaussian", 
+STEPR <- function(data, y, method = NA, family = "gaussian", 
                   nsteps = ncol(data)-1, top = 1, previous = NA, 
                   criterion = "Bonferroni", alpha = 0.05, 
                   previousparts=NA, denom=NA)
@@ -29,6 +29,8 @@ STEPR<-function(data, y, method = NA, family = "gaussian",
   if (sum(data == 0) > 0) 
     stop("Zero values in matrix data on which logratios constructed -- please replace")
   BonValue <- qchisq(1-alpha/(ncol(data)-1), 1)
+
+##-----------------------------------------------------------------------------------------------------------
   if(method == 1) {
     nratios <- nsteps
     deviances   <- matrix(999999, ncol(data), ncol(data))
@@ -299,7 +301,8 @@ STEPR<-function(data, y, method = NA, family = "gaussian",
   }
 ##--------------------------------------------------------------------------------------------------------
   if(method == 3) {
-    nratios <- min(nsteps, floor(ncol(data)/2))
+# 04/07/2024    nratios <- min(nsteps, floor(ncol(data)/2))
+    nratios <- nsteps
     rationames <- rep("", nratios)
     deviances   <- matrix(999999, ncol(data), ncol(data))
     logLiks     <- matrix(999999, ncol(data), ncol(data))
@@ -317,7 +320,6 @@ STEPR<-function(data, y, method = NA, family = "gaussian",
         }
     }
     if(!is.na(denom)) {
-      
         for (i in (1:ncol(data))[-denom]) {
           foo <- as.data.frame(list(logratio=log(data[, i]/data[, denom])))
           if (!is.na(previous[[1]][1])) {
@@ -327,7 +329,6 @@ STEPR<-function(data, y, method = NA, family = "gaussian",
           deviances[i, denom] <- deviance(foo.glm)
           logLiks[i, denom]    <- -2*logLik(foo.glm)
         }
-      
      }
     logLik.min <- min(logLiks)
     ratios <- as.matrix(which(logLiks == logLik.min, arr.ind = TRUE))
@@ -445,3 +446,5 @@ STEPR<-function(data, y, method = NA, family = "gaussian",
   }
 
 }
+
+
