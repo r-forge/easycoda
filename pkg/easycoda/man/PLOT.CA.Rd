@@ -60,7 +60,7 @@ Michael Greenacre
 data("cups")
 cups.ca <- CA(cups)
 PLOT.CA(cups.ca, map="contribution", rescale=0.2)	
-# Compare the above plot with that of an LRA -- practically the same
+# Compare the above plot with that of a weighted LRA -- practically the same
 cups.lra <- LRA(cups)
 PLOT.LRA(cups.lra, map="contribution", rescale=0.2)
 }
