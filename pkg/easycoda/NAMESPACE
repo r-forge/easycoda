@@ -1,4 +1,6 @@
-import(ca, vegan, ellipse)
+importFrom("vegan", "protest", "rda")
+importFrom("ca", "ca")
+importFrom("ellipse", "ellipse")
 importFrom("grDevices", "rainbow", "adjustcolor")
 importFrom("graphics", "abline", "arrows", "axTicks", "axis", "par",
            "plot", "points", "segments", "text", "lines", "polygon",
