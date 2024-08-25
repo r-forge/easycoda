@@ -27,13 +27,13 @@ Greenacre, Michael (2018) Compositional Data Analysis in Practice. Chapman & Hal
 }
 \examples{
 # Roman cups glass compositions
-data(cups)
+data("cups")
 # unweighted logratio analysis
-cups.uLRA <- LRA(cups, weight=FALSE)
-PLOT.LRA(cups.uLRA)
+cups.ulra <- LRA(cups, weight=FALSE)
+PLOT.LRA(cups.ulra)
 # weighted logratio analysis
-cups.wLRA <- LRA(cups)
-PLOT.LRA(cups.wLRA)
+cups.wlra <- LRA(cups)
+PLOT.LRA(cups.wlra)
 # author data set from the ca package
 data(author)
 which(author == 0, arr.ind = TRUE)
@@ -41,6 +41,8 @@ which(author == 0, arr.ind = TRUE)
 # replace it with 0.5 for the logratio analysis
 author[5,17] <- 0.5
 # LRA (weighted by default)
-# Here the ca plot function plot.ca is used
-plot(LRA(author))
+# The ca plot function plot.ca can be used if object class set to "ca"
+author.lra <- LRA(author)
+class(author.lra) <- "ca"
+plot(author.lra)
 }

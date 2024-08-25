@@ -132,7 +132,8 @@ cbind(fish.step3$ratios.top, fish.step3$BIC.top)
 # Jw/Fc    5  10 73.48882
 # Hw/Bp    1   7 73.55621
 # Suppose 5th in list, Jw/Jl (Jaw width/Jaw length), preferred at the first step, so forced in
-fish.step4 <- STEPR(morph, as.factor(habitat), method=1, previous=fish.step3$logratios.top[,5], family="binomial")
+fish.step4 <- STEPR(morph, as.factor(habitat), method=1, 
+                    previous=fish.step3$logratios.top[,5], family="binomial")
 # [1] "Criterion increases when 2-th ratio enters"
 fish.step4$names
 # [1] "Bac/Hg"
