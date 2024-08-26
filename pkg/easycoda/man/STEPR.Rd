@@ -89,11 +89,11 @@ Michael Greenacre
 data(fish)
 habitat <- fish[,2]
 morph <- CLOSE(fish[,4:29])
-# predict habitat binary classification from morphometric ratios, BIC criterion
-fish.step1 <- STEPR(morph, as.factor(habitat), method=1, family="binomial", criterion="BIC")
-# [1] "Criterion increases when 5-th ratio enters"
+# predict habitat binary classification from morphometric ratios
+fish.step1 <- STEPR(morph, as.factor(habitat), method=1, family="binomial")
+# [1] "Criterion increases when 3-th ratio enters"
 fish.step1$names
-# [1] "Bac/Hg" "Hw/Jl"  "Fc/Fdl" "Fal/Ed"
+# [1] "Bac/Hg" "Hw/Jl"
 # perform logistic regression with selected logratios
 fish.glm   <- glm(as.factor(habitat) ~ fish.step1$logratios, family="binomial")
 summary(fish.glm)
@@ -101,9 +101,9 @@ fish.pred1  <- predict(fish.glm)
 table(fish.pred1>0.5, habitat)
 #     habitat
 #        1  2
-# FALSE 57  4
-# TRUE   2 12
-# (Thus 69/75 correct predictions)
+# FALSE 56 11
+# TRUE   3  5
+# (Thus 61/75 correct predictions)
 #
 # force the sex variable in at the first step before selecting logratios
 # and using more strict Bonferroni default
@@ -115,9 +115,9 @@ fish.step2$names
 # perform logistic regression with sex and selected logratios
 fish.glm   <- glm(as.factor(habitat) ~ sex + fish.step2$logratios, family="binomial")
 summary(fish.glm)
-# (sex not significant, Bonferroni only admits first two logratios)
+# (sex not significant)
 #
-# check the top 10 ratios at Step 1 to allow domeain knowledge to operate
+# check the top 10 ratios at Step 1 to allow domain knowledge to operate
 fish.step3 <- STEPR(morph, as.factor(habitat), method=1, nsteps=1, top=10, family="binomial")
 cbind(fish.step3$ratios.top, fish.step3$BIC.top)
 #        row col         
@@ -131,7 +131,7 @@ cbind(fish.step3$ratios.top, fish.step3$BIC.top)
 # Hw/Bac   1   8 73.25325
 # Jw/Fc    5  10 73.48882
 # Hw/Bp    1   7 73.55621
-# Suppose 5th in list, Jw/Jl (Jaw width/Jaw length), preferred at the first step, so forced in
+# Suppose 5th in list, Jw/Jl (Jaw width/Jaw length), preferred at the first step
 fish.step4 <- STEPR(morph, as.factor(habitat), method=1, 
                     previous=fish.step3$logratios.top[,5], family="binomial")
 # [1] "Criterion increases when 2-th ratio enters"
